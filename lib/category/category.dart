@@ -11,7 +11,7 @@ abstract class Category {
   int successCount = 0;
   int failureCount = 0;
 
-  bool japanesePronunciation = true;
+  bool kunPronunciation = true;
   bool showDakuon = true;
   bool showHandakuten = true;
 

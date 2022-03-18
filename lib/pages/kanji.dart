@@ -28,6 +28,7 @@ class _KanjiPageState extends State<KanjiPage> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Const.BACKGROUND_COLOR,
         body: Center(
           child: Column(
@@ -184,35 +185,33 @@ class _KanjiPageState extends State<KanjiPage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Checkbox(
                 activeColor: Const.ICON_COLOR,
-                value: _words.japanesePronunciation,
+                value: _words.kunPronunciation,
                 side: BorderSide(color: Const.ICON_COLOR),
                 onChanged: (bool? value) {
                   setState(() {
-                    _words.japanesePronunciation = value!;
+                    _words.kunPronunciation = value!;
                   });
                 }),
-            Text('Hiragana pronunciation',
-                style: TextStyle(color: Const.TEXT_COLOR)),
+            Text('Kun (Hiragana)', style: TextStyle(color: Const.TEXT_COLOR)),
           ],
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Checkbox(
                 activeColor: Const.ICON_COLOR,
-                value: !_words.japanesePronunciation,
+                value: !_words.kunPronunciation,
                 side: BorderSide(color: Const.ICON_COLOR),
                 onChanged: (bool? value) {
                   setState(() {
-                    _words.japanesePronunciation = !value!;
+                    _words.kunPronunciation = !value!;
                   });
                 }),
-            Text('Katakana pronunciation',
-                style: TextStyle(color: Const.TEXT_COLOR)),
+            Text('On (Katakana)', style: TextStyle(color: Const.TEXT_COLOR)),
           ],
         ),
       ],

@@ -31,6 +31,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Const.BACKGROUND_COLOR,
         body: Center(
           child: Column(
