@@ -82,21 +82,31 @@ abstract class Category {
   }
 
   newWord() {
+    int oldIndex = index;
     if (!hasMeaning) {
       if (showDakuon && showHandakuten) {
-        index = rng.nextInt(list.length);
+        do {
+          index = rng.nextInt(list.length);
+        } while (index == oldIndex);
       } else if (showDakuon) {
-        index = rng.nextInt(list.length - _nbHandakuten);
+        do {
+          index = rng.nextInt(list.length - _nbHandakuten);
+        } while (index == oldIndex);
       } else if (showHandakuten) {
         do {
           index = rng.nextInt(list.length);
         } while (index >= list.length - _nbHandakuten - _nbDakuon &&
-            index < list.length - _nbHandakuten);
+            index < list.length - _nbHandakuten &&
+            oldIndex == index);
       } else {
-        index = rng.nextInt(list.length - _nbHandakuten - _nbDakuon);
+        do {
+          index = rng.nextInt(list.length - _nbHandakuten - _nbDakuon);
+        } while (index == oldIndex);
       }
     } else {
-      index = rng.nextInt(list.length);
+      do {
+        index = rng.nextInt(list.length);
+      } while (index == oldIndex);
     }
   }
 

@@ -13,6 +13,14 @@ class KanjiPage extends StatefulWidget {
 class _KanjiPageState extends State<KanjiPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   var _words = Kanji();
+  var text = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getSavedSuccess();
+    _getSavedFailure();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +30,119 @@ class _KanjiPageState extends State<KanjiPage> {
         backgroundColor: Const.BACKGROUND_COLOR,
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                _words.getSymbol(),
-                style: TextStyle(color: Const.ICON_COLOR, fontSize: 100),
+              Column(
+                children: [
+                  Text(
+                    _words.getSymbol(),
+                    style: TextStyle(color: Const.TEXT_COLOR, fontSize: 100),
+                  ),
+                  Text(_words.getMeaning(),
+                      style: TextStyle(color: Const.TEXT_COLOR, fontSize: 45)),
+                ],
               ),
-              TextField(),
-              getButtons(),
+              Column(children: [
+                Text(
+                  _words.getSuccessCount().toString() + ' success(es)',
+                  style: TextStyle(color: Const.TEXT_COLOR, fontSize: 20),
+                ),
+                Text(
+                  _words.getFailureCount().toString() + ' failure(s)',
+                  style: TextStyle(color: Const.TEXT_COLOR, fontSize: 20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: TextField(
+                    controller: text,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Const.TEXT_COLOR, fontSize: 20),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Const.TEXT_COLOR),
+                      ),
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.all(15),
+                      isDense: true,
+                      labelText: 'Answer',
+                      labelStyle: TextStyle(color: Const.TEXT_COLOR),
+                    ),
+                    onSubmitted: (String value) async {
+                      await displayDialog(context, value);
+                      setState(() {
+                        text.clear();
+                      });
+                    },
+                  ),
+                ),
+                getCheckMark(),
+                getButtons(),
+              ])
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> displayDialog(BuildContext context, String value) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        if (_checkAnswer(value)) {
+          return AlertDialog(
+            title: Text(
+              'おめでとう!',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+            content: Text(
+              'You guessed correctly',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+            backgroundColor: Const.BACKGROUND_COLOR,
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  _words.newWord();
+                  _incrementSuccess();
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OK',
+                  style: TextStyle(color: Const.TEXT_COLOR),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return AlertDialog(
+            title: Text(
+              'Almost!',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+            content: Text(
+              'You typed "$value" but it was "' + _words.getLetter() + '".',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+            backgroundColor: Const.BACKGROUND_COLOR,
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  _words.newWord();
+                  _incrementFailure();
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'OK',
+                  style: TextStyle(color: Const.TEXT_COLOR),
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 
@@ -43,34 +152,67 @@ class _KanjiPageState extends State<KanjiPage> {
       children: [
         TextButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.pressed)) {
-                return Theme.of(context).colorScheme.primary.withOpacity(0.5);
-              }
-              return null;
-            }),
+            backgroundColor: Const.BUTTON_COLOR,
           ),
-          onPressed: _words.resetStats(),
+          onPressed: () {
+            setState(() {
+              _reset();
+              text.clear();
+            });
+          },
           child: const Text("Reset"),
         ),
         TextButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.pressed)) {
-                return Theme.of(context).colorScheme.primary.withOpacity(0.5);
-              }
-              return null;
-            }),
+            backgroundColor: Const.BUTTON_COLOR,
           ),
           onPressed: () {
             setState(() {
               _words.newWord();
-              //clearText();
+              clearText();
             });
           },
           child: const Text("Pass"),
+        ),
+      ],
+    );
+  }
+
+  getCheckMark() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Checkbox(
+                activeColor: Const.ICON_COLOR,
+                value: _words.japanesePronunciation,
+                side: BorderSide(color: Const.ICON_COLOR),
+                onChanged: (bool? value) {
+                  setState(() {
+                    _words.japanesePronunciation = value!;
+                  });
+                }),
+            Text('Hiragana pronunciation',
+                style: TextStyle(color: Const.TEXT_COLOR)),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Checkbox(
+                activeColor: Const.ICON_COLOR,
+                value: !_words.japanesePronunciation,
+                side: BorderSide(color: Const.ICON_COLOR),
+                onChanged: (bool? value) {
+                  setState(() {
+                    _words.japanesePronunciation = !value!;
+                  });
+                }),
+            Text('Katakana pronunciation',
+                style: TextStyle(color: Const.TEXT_COLOR)),
+          ],
         ),
       ],
     );
@@ -117,5 +259,16 @@ class _KanjiPageState extends State<KanjiPage> {
       _words.setFailureCount(
           prefs.getInt(_words.getTitle().toString() + '_failure') ?? 0);
     });
+  }
+
+  _reset() {
+    _incrementSaved(_words.getTitle().toString() + '_success', 0);
+    _incrementSaved(_words.getTitle().toString() + '_failure', 0);
+    _getSavedSuccess();
+    _getSavedFailure();
+  }
+
+  clearText() {
+    text.clear();
   }
 }

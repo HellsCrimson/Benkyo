@@ -37,16 +37,16 @@ class _HiraganaPageState extends State<HiraganaPage> {
             children: [
               Text(
                 _words.getSymbol(),
-                style: TextStyle(color: Const.ICON_COLOR, fontSize: 100),
+                style: TextStyle(color: Const.TEXT_COLOR, fontSize: 100),
               ),
               Column(children: [
                 Text(
                   _words.getSuccessCount().toString() + ' success(es)',
-                  style: TextStyle(color: Const.ICON_COLOR, fontSize: 20),
+                  style: TextStyle(color: Const.TEXT_COLOR, fontSize: 20),
                 ),
                 Text(
                   _words.getFailureCount().toString() + ' failure(s)',
-                  style: TextStyle(color: Const.ICON_COLOR, fontSize: 20),
+                  style: TextStyle(color: Const.TEXT_COLOR, fontSize: 20),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -55,16 +55,16 @@ class _HiraganaPageState extends State<HiraganaPage> {
                     autocorrect: false,
                     enableSuggestions: false,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Const.ICON_COLOR, fontSize: 20),
-                    decoration: const InputDecoration(
+                    style: TextStyle(color: Const.TEXT_COLOR, fontSize: 20),
+                    decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff4A80F0)),
+                        borderSide: BorderSide(color: Const.TEXT_COLOR),
                       ),
                       border: OutlineInputBorder(),
                       contentPadding: EdgeInsets.all(15),
                       isDense: true,
                       labelText: 'Answer',
-                      labelStyle: TextStyle(color: Color(0xff4A80F0)),
+                      labelStyle: TextStyle(color: Const.TEXT_COLOR),
                     ),
                     onSubmitted: (String value) async {
                       await displayDialog(context, value);
@@ -74,6 +74,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
                     },
                   ),
                 ),
+                getCheckMark(),
                 getButtons(),
               ])
             ],
@@ -89,8 +90,15 @@ class _HiraganaPageState extends State<HiraganaPage> {
       builder: (BuildContext context) {
         if (_checkAnswer(value)) {
           return AlertDialog(
-            title: const Text('おめでとう!'),
-            content: const Text('You guessed correctly'),
+            title: Text(
+              'おめでとう!',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+            content: Text(
+              'You guessed correctly',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+            backgroundColor: Const.BACKGROUND_COLOR,
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -98,15 +106,24 @@ class _HiraganaPageState extends State<HiraganaPage> {
                   _incrementSuccess();
                   Navigator.pop(context);
                 },
-                child: const Text('OK'),
+                child: Text(
+                  'OK',
+                  style: TextStyle(color: Const.TEXT_COLOR),
+                ),
               ),
             ],
           );
         } else {
           return AlertDialog(
-            title: const Text('Almost!'),
+            title: Text(
+              'Almost!',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
             content: Text(
-                'You typed "$value" but it was "' + _words.getLetter() + '".'),
+              'You typed "$value" but it was "' + _words.getLetter() + '".',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+            backgroundColor: Const.BACKGROUND_COLOR,
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -114,7 +131,10 @@ class _HiraganaPageState extends State<HiraganaPage> {
                   _incrementFailure();
                   Navigator.pop(context);
                 },
-                child: const Text('OK'),
+                child: Text(
+                  'OK',
+                  style: TextStyle(color: Const.TEXT_COLOR),
+                ),
               ),
             ],
           );
@@ -133,7 +153,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
           ),
           onPressed: () {
             setState(() {
-              _words.newWord();
+              _reset();
               text.clear();
             });
           },
@@ -151,6 +171,52 @@ class _HiraganaPageState extends State<HiraganaPage> {
           },
           child: const Text("Pass"),
         ),
+      ],
+    );
+  }
+
+  getCheckMark() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Row(
+          children: [
+            Checkbox(
+              activeColor: Const.ICON_COLOR,
+              value: _words.showDakuon,
+              side: BorderSide(color: Const.ICON_COLOR),
+              onChanged: (bool? value) {
+                setState(() {
+                  _words.showDakuon = value!;
+                  _words.newWord();
+                });
+              },
+            ),
+            Text(
+              'Dakuon',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Checkbox(
+              activeColor: Const.ICON_COLOR,
+              value: _words.showHandakuten,
+              side: BorderSide(color: Const.ICON_COLOR),
+              onChanged: (bool? value) {
+                setState(() {
+                  _words.showHandakuten = value!;
+                  _words.newWord();
+                });
+              },
+            ),
+            Text(
+              'Handakuten',
+              style: TextStyle(color: Const.TEXT_COLOR),
+            ),
+          ],
+        )
       ],
     );
   }
@@ -196,6 +262,13 @@ class _HiraganaPageState extends State<HiraganaPage> {
       _words.setFailureCount(
           prefs.getInt(_words.getTitle().toString() + '_failure') ?? 0);
     });
+  }
+
+  _reset() {
+    _incrementSaved(_words.getTitle().toString() + '_success', 0);
+    _incrementSaved(_words.getTitle().toString() + '_failure', 0);
+    _getSavedSuccess();
+    _getSavedFailure();
   }
 
   clearText() {

@@ -4,6 +4,7 @@ class Const {
   // GENERAL
   static final Color BACKGROUND_COLOR = Color(0xff121421);
   static final Color TRANSPARENT_COLOR = Colors.transparent;
+  static final Color TEXT_COLOR = Color(0xff4A80F0);
 
   static final MaterialStateProperty<Color?>? BUTTON_COLOR =
       MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
