@@ -20,6 +20,7 @@ class _KanjiPageState extends State<KanjiPage> {
     super.initState();
     _getSavedSuccess();
     _getSavedFailure();
+    _words.newWord();
   }
 
   @override

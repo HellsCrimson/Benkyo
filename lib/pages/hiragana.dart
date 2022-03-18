@@ -23,6 +23,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
     super.initState();
     _getSavedSuccess();
     _getSavedFailure();
+    _words.newWord();
   }
 
   @override

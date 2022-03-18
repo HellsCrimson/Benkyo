@@ -21,6 +21,7 @@ class _KatakanaPageState extends State<KatakanaPage> {
     super.initState();
     _getSavedSuccess();
     _getSavedFailure();
+    _words.newWord();
   }
 
   @override
