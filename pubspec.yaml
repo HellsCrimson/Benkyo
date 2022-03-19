@@ -16,6 +16,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^2.1.1
 
 flutter_icons:
   ios: true
@@ -32,3 +33,10 @@ flutter:
   assets:
     - assets/icons/
 
+flutter_native_splash:
+  color: "#121421"
+  image: assets/splash_screen/勉強-logos.png
+  branding: assets/splash_screen/Benkyō-logos.png
+  branding_mode: bottom
+  android: true
+  ios: true

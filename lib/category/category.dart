@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 abstract class Category {
   int id;
   String title;
@@ -19,8 +17,6 @@ abstract class Category {
   final int _nbDakuon = 25;
 
   Random rng = Random();
-
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Category(this.id, this.title, this.list, this.hasMeaning);
 
@@ -52,6 +48,10 @@ abstract class Category {
     return failureCount;
   }
 
+  getIndex() {
+    return index;
+  }
+
   setSuccessCount(int count) {
     successCount = count;
   }
@@ -62,6 +62,10 @@ abstract class Category {
 
   setHasMeaning(bool hasMeaning) {
     this.hasMeaning = hasMeaning;
+  }
+
+  setIndex(int index) {
+    this.index = index;
   }
 
   getHasMeaning() {
