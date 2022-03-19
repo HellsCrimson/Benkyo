@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:benkyo/home_page.dart';
 
+import 'widgets/const.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -17,7 +19,15 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       builder: () => GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(),
+        theme: ThemeData(
+          primarySwatch: Const.PRIMARY_COLOR,
+          brightness: Brightness.light,
+        ),
+        darkTheme: ThemeData(
+          primarySwatch: Const.PRIMARY_COLOR,
+          brightness: Brightness.dark,
+        ),
+        themeMode: ThemeMode.dark,
         home: HomePage(),
       ),
     );

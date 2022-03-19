@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Const {
   // GENERAL
+  static final MaterialColor PRIMARY_COLOR = Colors.blue;
   static final Color BACKGROUND_COLOR = Color(0xff121421);
   static final Color TRANSPARENT_COLOR = Colors.transparent;
   static final Color TEXT_COLOR = Color(0xff4A80F0);
