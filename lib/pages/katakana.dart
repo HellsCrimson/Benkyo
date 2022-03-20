@@ -103,13 +103,14 @@ class _KatakanaPageState extends State<KatakanaPage> {
                 getButtons(),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            HistoricPage(history: _words.history),
-                      ),
-                    );
+                    _words.getHistory().then((value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HistoricPage(
+                              history: value,
+                            ),
+                          ),
+                        ));
                   },
                   child: Text('Historic'),
                 ),

@@ -1,5 +1,11 @@
 import 'dart:math';
 
+import 'package:benkyo/category/hiragana.dart';
+import 'package:benkyo/category/kanji.dart';
+import 'package:benkyo/category/katakana.dart';
+import 'package:benkyo/database/database.dart';
+import 'package:drift/drift.dart';
+
 abstract class Category {
   int id;
   String title;
@@ -18,7 +24,7 @@ abstract class Category {
 
   Random rng = Random();
 
-  List<List<String>> history = [];
+  Database _db = Database();
 
   Category(this.id, this.title, this.list, this.hasMeaning);
 
@@ -117,11 +123,46 @@ abstract class Category {
   }
 
   bool checkAnswer(String answer) {
-    history.add([getSymbol(), getLetter(), answer]);
+    saveInDb(answer);
     if (getLetter() == answer.trim().toLowerCase()) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  void saveInDb(String answer) {
+    if (this is Hiragana) {
+      final entity = HiraganaHistoryCompanion(
+        symbol: Value(getSymbol()),
+        romaji: Value(getLetter()),
+        userInput: Value(answer),
+      );
+      _db.insertHiraganaHistory(entity);
+    } else if (this is Katakana) {
+      final entity = KatakanaHistoryCompanion(
+        symbol: Value(getSymbol()),
+        romaji: Value(getLetter()),
+        userInput: Value(answer),
+      );
+      _db.insertKatakanaHistory(entity);
+    } else if (this is Kanji) {
+      final entity = KanjiHistoryCompanion(
+        symbol: Value(getSymbol()),
+        romaji: Value(getLetter()),
+        userInput: Value(answer),
+      );
+      _db.insertKanjiHistory(entity);
+    }
+  }
+
+  Future<List<dynamic>> getHistory() async {
+    if (this is Hiragana) {
+      return await _db.getHiraganaHistory();
+    } else if (this is Katakana) {
+      return await _db.getKatakanaHistory();
+    } else {
+      return await _db.getKanjiHistory();
     }
   }
 }

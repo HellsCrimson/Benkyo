@@ -1,4 +1,5 @@
 import 'package:benkyo/category/hiragana.dart';
+import 'package:benkyo/database/database.dart';
 import 'package:benkyo/pages/historic.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -105,13 +106,14 @@ class _HiraganaPageState extends State<HiraganaPage> {
                 getButtons(),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            HistoricPage(history: _words.history),
-                      ),
-                    );
+                    _words.getHistory().then((value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HistoricPage(
+                              history: value,
+                            ),
+                          ),
+                        ));
                   },
                   child: Text('Historic'),
                 ),

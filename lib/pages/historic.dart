@@ -1,10 +1,14 @@
+import 'package:benkyo/database/database.dart';
 import 'package:benkyo/widgets/const.dart';
 import 'package:flutter/material.dart';
 
 class HistoricPage extends StatefulWidget {
-  const HistoricPage({Key? key, required this.history}) : super(key: key);
+  const HistoricPage({
+    Key? key,
+    required this.history,
+  }) : super(key: key);
 
-  final List<List<String>> history;
+  final List<dynamic> history;
 
   @override
   _HistoricPageState createState() => _HistoricPageState();
@@ -64,7 +68,7 @@ class _HistoricPageState extends State<HistoricPage> {
           cells: [
             DataCell(
               Text(
-                widget.history[y][0],
+                widget.history[y].symbol,
                 style: TextStyle(
                   color: Const.TEXT_COLOR,
                 ),
@@ -72,7 +76,7 @@ class _HistoricPageState extends State<HistoricPage> {
             ),
             DataCell(
               Text(
-                widget.history[y][1],
+                widget.history[y].romaji,
                 style: TextStyle(
                   color: Const.TEXT_COLOR,
                 ),
@@ -80,7 +84,7 @@ class _HistoricPageState extends State<HistoricPage> {
             ),
             DataCell(
               Text(
-                widget.history[y][2],
+                widget.history[y].userInput,
                 style: TextStyle(
                   color: Const.TEXT_COLOR,
                 ),
