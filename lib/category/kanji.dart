@@ -1,4 +1,4 @@
-import 'category.dart';
+import 'package:benkyo/category/category.dart';
 
 class Kanji extends Category {
   Kanji() : super(2, 'Kanji', kanji, true);

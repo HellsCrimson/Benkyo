@@ -21,6 +21,11 @@ class _HomePageState extends State<HomePage> {
     KanjiPage(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

@@ -1,9 +1,9 @@
+import 'package:benkyo/notification_service.dart';
 import 'package:benkyo/widgets/const.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../category/katakana.dart';
-import 'historic.dart';
+import 'package:benkyo/category/katakana.dart';
+import 'package:benkyo/pages/historic.dart';
 
 class KatakanaPage extends StatefulWidget {
   const KatakanaPage({Key? key}) : super(key: key);
@@ -13,6 +13,7 @@ class KatakanaPage extends StatefulWidget {
 }
 
 class _KatakanaPageState extends State<KatakanaPage> {
+  NotificationService _notificationService = NotificationService();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Katakana _words = Katakana();
   var text = TextEditingController();
@@ -90,6 +91,7 @@ class _KatakanaPageState extends State<KatakanaPage> {
                       ),
                     ),
                     onSubmitted: (String value) async {
+                      _notificationService.dailyNotification();
                       await displayDialog(context, value);
                       setState(() {
                         text.clear();

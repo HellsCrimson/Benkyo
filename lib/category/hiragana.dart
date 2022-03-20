@@ -1,4 +1,4 @@
-import 'category.dart';
+import 'package:benkyo/category/category.dart';
 
 class Hiragana extends Category {
   Hiragana() : super(0, "Hiragana", hiragana, false);

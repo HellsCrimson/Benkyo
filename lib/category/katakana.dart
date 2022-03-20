@@ -1,4 +1,4 @@
-import 'category.dart';
+import 'package:benkyo/category/category.dart';
 
 class Katakana extends Category {
   Katakana() : super(1, "Katakana", katakana, false);

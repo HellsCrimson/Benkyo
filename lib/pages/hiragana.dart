@@ -2,8 +2,8 @@ import 'package:benkyo/category/hiragana.dart';
 import 'package:benkyo/pages/historic.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../widgets/const.dart';
+import 'package:benkyo/notification_service.dart';
+import 'package:benkyo/widgets/const.dart';
 
 class HiraganaPage extends StatefulWidget {
   const HiraganaPage({
@@ -15,6 +15,7 @@ class HiraganaPage extends StatefulWidget {
 }
 
 class _HiraganaPageState extends State<HiraganaPage> {
+  NotificationService _notificationService = NotificationService();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Hiragana _words = Hiragana();
   var text = TextEditingController();
@@ -92,6 +93,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
                       ),
                     ),
                     onSubmitted: (String value) async {
+                      _notificationService.dailyNotification();
                       await displayDialog(context, value);
                       setState(() {
                         text.clear();

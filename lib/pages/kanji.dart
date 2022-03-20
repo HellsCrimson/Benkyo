@@ -1,9 +1,9 @@
 import 'package:benkyo/widgets/const.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../category/kanji.dart';
-import 'historic.dart';
+import 'package:benkyo/category/kanji.dart';
+import 'package:benkyo/notification_service.dart';
+import 'package:benkyo/pages/historic.dart';
 
 class KanjiPage extends StatefulWidget {
   const KanjiPage({Key? key}) : super(key: key);
@@ -12,6 +12,7 @@ class KanjiPage extends StatefulWidget {
 }
 
 class _KanjiPageState extends State<KanjiPage> {
+  NotificationService _notificationService = NotificationService();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Kanji _words = Kanji();
   var text = TextEditingController();
@@ -98,6 +99,7 @@ class _KanjiPageState extends State<KanjiPage> {
                       ),
                     ),
                     onSubmitted: (String value) async {
+                      _notificationService.dailyNotification();
                       await displayDialog(context, value);
                       setState(() {
                         text.clear();
