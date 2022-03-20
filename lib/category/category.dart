@@ -18,6 +18,8 @@ abstract class Category {
 
   Random rng = Random();
 
+  List<List<String>> history = [];
+
   Category(this.id, this.title, this.list, this.hasMeaning);
 
   getLetter() {
@@ -115,6 +117,7 @@ abstract class Category {
   }
 
   bool checkAnswer(String answer) {
+    history.add([getSymbol(), getLetter(), answer]);
     if (getLetter() == answer.trim().toLowerCase()) {
       return true;
     } else {

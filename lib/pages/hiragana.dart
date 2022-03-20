@@ -1,4 +1,5 @@
 import 'package:benkyo/category/hiragana.dart';
+import 'package:benkyo/pages/historic.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,15 +16,15 @@ class HiraganaPage extends StatefulWidget {
 
 class _HiraganaPageState extends State<HiraganaPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  var _words = Hiragana();
+  Hiragana _words = Hiragana();
   var text = TextEditingController();
 
   @override
   void initState() {
+    super.initState();
     _getSavedSuccess();
     _getSavedFailure();
     _getSavedIndex();
-    super.initState();
   }
 
   @override
@@ -100,6 +101,18 @@ class _HiraganaPageState extends State<HiraganaPage> {
                 ),
                 getCheckMark(),
                 getButtons(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HistoricPage(history: _words.history),
+                      ),
+                    );
+                  },
+                  child: Text('Historic'),
+                ),
               ])
             ],
           ),

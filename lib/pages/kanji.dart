@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../category/kanji.dart';
+import 'historic.dart';
 
 class KanjiPage extends StatefulWidget {
   const KanjiPage({Key? key}) : super(key: key);
@@ -12,15 +13,15 @@ class KanjiPage extends StatefulWidget {
 
 class _KanjiPageState extends State<KanjiPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  var _words = Kanji();
+  Kanji _words = Kanji();
   var text = TextEditingController();
 
   @override
   void initState() {
+    super.initState();
     _getSavedSuccess();
     _getSavedFailure();
     _getSavedIndex();
-    super.initState();
   }
 
   @override
@@ -106,6 +107,18 @@ class _KanjiPageState extends State<KanjiPage> {
                 ),
                 getCheckMark(),
                 getButtons(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HistoricPage(history: _words.history),
+                      ),
+                    );
+                  },
+                  child: Text('Historic'),
+                ),
               ])
             ],
           ),

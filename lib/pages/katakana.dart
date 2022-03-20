@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../category/katakana.dart';
+import 'historic.dart';
 
 class KatakanaPage extends StatefulWidget {
   const KatakanaPage({Key? key}) : super(key: key);
@@ -13,15 +14,15 @@ class KatakanaPage extends StatefulWidget {
 
 class _KatakanaPageState extends State<KatakanaPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  var _words = Katakana();
+  Katakana _words = Katakana();
   var text = TextEditingController();
 
   @override
   void initState() {
+    super.initState();
     _getSavedSuccess();
     _getSavedFailure();
     _getSavedIndex();
-    super.initState();
   }
 
   @override
@@ -98,6 +99,18 @@ class _KatakanaPageState extends State<KatakanaPage> {
                 ),
                 getCheckMark(),
                 getButtons(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HistoricPage(history: _words.history),
+                      ),
+                    );
+                  },
+                  child: Text('Historic'),
+                ),
               ])
             ],
           ),
