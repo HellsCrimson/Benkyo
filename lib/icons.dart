@@ -11,7 +11,8 @@ class KanaSvgAssets {
     AssetName.hiragana: "assets/icons/hiragana.svg",
     AssetName.katakana: "assets/icons/katakana.svg",
     AssetName.kanji: "assets/icons/kanji.svg",
+    AssetName.settings: "assets/icons/settings.svg",
   };
 }
 
-enum AssetName { hiragana, katakana, kanji }
+enum AssetName { hiragana, katakana, kanji, settings }

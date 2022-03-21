@@ -1,3 +1,4 @@
+import 'package:benkyo/pages/settings.dart';
 import 'package:benkyo/widgets/const.dart';
 import 'package:flutter/material.dart';
 import 'package:benkyo/pages/katakana.dart';
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
     HiraganaPage(),
     KatakanaPage(),
     KanjiPage(),
+    SettingsPage(),
   ];
 
   @override
@@ -120,6 +122,31 @@ class _HomePageState extends State<HomePage> {
                   assetName: AssetName.kanji,
                   height: Const.ICON_SIZE,
                   width: Const.ICON_SIZE,
+                  color: Const.ICON_COLOR,
+                ),
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: SvgAsset(
+                  assetName: AssetName.settings,
+                  height: Const.ICON_SIZE - 10,
+                  width: Const.ICON_SIZE - 10),
+              label: '',
+              tooltip: 'Settings',
+              activeIcon: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Const.ICON_COLOR.withOpacity(0.3),
+                        offset: Offset(0, 4),
+                        blurRadius: 20),
+                  ],
+                ),
+                child: SvgAsset(
+                  assetName: AssetName.settings,
+                  height: Const.ICON_SIZE - 10,
+                  width: Const.ICON_SIZE - 10,
                   color: Const.ICON_COLOR,
                 ),
               ),

@@ -201,7 +201,7 @@ class _KatakanaPageState extends State<KatakanaPage> {
       children: [
         TextButton(
           style: ButtonStyle(
-            backgroundColor: Const.BUTTON_COLOR,
+            backgroundColor: Const.MAT_STATE_BUTTON_COLOR,
           ),
           onPressed: () {
             setState(() {
@@ -213,7 +213,7 @@ class _KatakanaPageState extends State<KatakanaPage> {
         ),
         TextButton(
           style: ButtonStyle(
-            backgroundColor: Const.BUTTON_COLOR,
+            backgroundColor: Const.MAT_STATE_BUTTON_COLOR,
           ),
           onPressed: () {
             setState(() {

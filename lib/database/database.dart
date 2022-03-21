@@ -26,7 +26,11 @@ class Database extends _$Database {
 
   // Hiragana
   Future<List<HiraganaHistoryData>> getHiraganaHistory() async {
-    return await select(hiraganaHistory).get();
+    return await (select(hiraganaHistory)
+          ..orderBy([
+            (h) => OrderingTerm(expression: h.id, mode: OrderingMode.desc),
+          ]))
+        .get();
   }
 
   Future<HiraganaHistoryData> getHiraganaHistoryById(int id) async {
@@ -55,7 +59,11 @@ class Database extends _$Database {
 
   // Katakana
   Future<List<KatakanaHistoryData>> getKatakanaHistory() async {
-    return await select(katakanaHistory).get();
+    return await (select(katakanaHistory)
+          ..orderBy([
+            (h) => OrderingTerm(expression: h.id, mode: OrderingMode.desc),
+          ]))
+        .get();
   }
 
   Future<KatakanaHistoryData> getKatakanaHistoryById(int id) async {
@@ -84,7 +92,11 @@ class Database extends _$Database {
 
   // Kanji
   Future<List<KanjiHistoryData>> getKanjiHistory() async {
-    return await select(kanjiHistory).get();
+    return await (select(kanjiHistory)
+          ..orderBy([
+            (h) => OrderingTerm(expression: h.id, mode: OrderingMode.desc),
+          ]))
+        .get();
   }
 
   Future<KanjiHistoryData> getKanjiHistoryById(int id) async {

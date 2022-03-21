@@ -204,7 +204,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
       children: [
         TextButton(
           style: ButtonStyle(
-            backgroundColor: Const.BUTTON_COLOR,
+            backgroundColor: Const.MAT_STATE_BUTTON_COLOR,
           ),
           onPressed: () {
             setState(() {
@@ -216,7 +216,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
         ),
         TextButton(
           style: ButtonStyle(
-            backgroundColor: Const.BUTTON_COLOR,
+            backgroundColor: Const.MAT_STATE_BUTTON_COLOR,
           ),
           onPressed: () {
             setState(() {

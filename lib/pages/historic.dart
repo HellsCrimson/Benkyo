@@ -1,4 +1,3 @@
-import 'package:benkyo/database/database.dart';
 import 'package:benkyo/widgets/const.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +29,15 @@ class _HistoricPageState extends State<HistoricPage> {
       body: SingleChildScrollView(
         child: Center(
           child: DataTable(
+            columnSpacing: 40,
             columns: [
+              DataColumn(
+                  label: Text(
+                'n°',
+                style: TextStyle(
+                  color: Const.TEXT_COLOR,
+                ),
+              )),
               DataColumn(
                   label: Text(
                 'Symbol',
@@ -66,6 +73,14 @@ class _HistoricPageState extends State<HistoricPage> {
       rows.add(
         DataRow(
           cells: [
+            DataCell(
+              Text(
+                '${widget.history[y].id}',
+                style: TextStyle(
+                  color: Const.TEXT_COLOR,
+                ),
+              ),
+            ),
             DataCell(
               Text(
                 widget.history[y].symbol,

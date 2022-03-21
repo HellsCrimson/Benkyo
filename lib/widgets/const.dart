@@ -7,7 +7,7 @@ class Const {
   static final Color TRANSPARENT_COLOR = Colors.transparent;
   static final Color TEXT_COLOR = Color(0xff4A80F0);
 
-  static final MaterialStateProperty<Color?>? BUTTON_COLOR =
+  static final MaterialStateProperty<Color?>? MAT_STATE_BUTTON_COLOR =
       MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
     if (states.contains(MaterialState.pressed)) {
       return BACKGROUND_COLOR.withOpacity(0.5);

@@ -209,7 +209,7 @@ class _KanjiPageState extends State<KanjiPage> {
       children: [
         TextButton(
           style: ButtonStyle(
-            backgroundColor: Const.BUTTON_COLOR,
+            backgroundColor: Const.MAT_STATE_BUTTON_COLOR,
           ),
           onPressed: () {
             setState(() {
@@ -221,7 +221,7 @@ class _KanjiPageState extends State<KanjiPage> {
         ),
         TextButton(
           style: ButtonStyle(
-            backgroundColor: Const.BUTTON_COLOR,
+            backgroundColor: Const.MAT_STATE_BUTTON_COLOR,
           ),
           onPressed: () {
             setState(() {
