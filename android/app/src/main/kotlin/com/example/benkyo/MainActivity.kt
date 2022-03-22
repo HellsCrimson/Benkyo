@@ -1,4 +1,4 @@
-package com.example.meditation
+package com.example.benkyo
 
 import io.flutter.embedding.android.FlutterActivity
 
