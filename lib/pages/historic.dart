@@ -29,15 +29,16 @@ class _HistoricPageState extends State<HistoricPage> {
       body: SingleChildScrollView(
         child: Center(
           child: DataTable(
-            columnSpacing: 40,
+            columnSpacing: 25,
             columns: [
               DataColumn(
-                  label: Text(
-                'n°',
-                style: TextStyle(
-                  color: Const.TEXT_COLOR,
+                label: Text(
+                  'Was Correct',
+                  style: TextStyle(
+                    color: Const.TEXT_COLOR,
+                  ),
                 ),
-              )),
+              ),
               DataColumn(
                   label: Text(
                 'Symbol',
@@ -74,34 +75,46 @@ class _HistoricPageState extends State<HistoricPage> {
         DataRow(
           cells: [
             DataCell(
-              Text(
-                '${widget.history[y].id}',
-                style: TextStyle(
-                  color: Const.TEXT_COLOR,
+              Center(
+                child: Checkbox(
+                  onChanged: (bool? value) {},
+                  value: true,
+                  activeColor:
+                      widget.history[y].romaji == widget.history[y].userInput
+                          ? Colors.green
+                          : Colors.red,
+                  splashRadius: 0,
+                  checkColor: Const.TRANSPARENT_COLOR,
                 ),
               ),
             ),
             DataCell(
-              Text(
-                widget.history[y].symbol,
-                style: TextStyle(
-                  color: Const.TEXT_COLOR,
+              Center(
+                child: Text(
+                  widget.history[y].symbol,
+                  style: TextStyle(
+                    color: Const.TEXT_COLOR,
+                  ),
                 ),
               ),
             ),
             DataCell(
-              Text(
-                widget.history[y].romaji,
-                style: TextStyle(
-                  color: Const.TEXT_COLOR,
+              Center(
+                child: Text(
+                  widget.history[y].romaji,
+                  style: TextStyle(
+                    color: Const.TEXT_COLOR,
+                  ),
                 ),
               ),
             ),
             DataCell(
-              Text(
-                widget.history[y].userInput,
-                style: TextStyle(
-                  color: Const.TEXT_COLOR,
+              Center(
+                child: Text(
+                  widget.history[y].userInput,
+                  style: TextStyle(
+                    color: Const.TEXT_COLOR,
+                  ),
                 ),
               ),
             ),
