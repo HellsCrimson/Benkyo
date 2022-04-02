@@ -76,6 +76,18 @@ abstract class Category {
     this.index = index;
   }
 
+  setShowDakuon(bool showDakuon) {
+    this.showDakuon = showDakuon;
+  }
+
+  setShowHandakuten(bool showHandakuten) {
+    this.showHandakuten = showHandakuten;
+  }
+
+  setKunPronunciation(bool kunPronunciation) {
+    this.kunPronunciation = kunPronunciation;
+  }
+
   getHasMeaning() {
     return hasMeaning;
   }

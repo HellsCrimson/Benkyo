@@ -1,10 +1,11 @@
 import 'package:benkyo/category/hiragana.dart';
-import 'package:benkyo/database/database.dart';
 import 'package:benkyo/pages/historic.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:benkyo/notification_service.dart';
 import 'package:benkyo/widgets/const.dart';
+
+Hiragana _words = Hiragana();
 
 class HiraganaPage extends StatefulWidget {
   const HiraganaPage({
@@ -18,7 +19,6 @@ class HiraganaPage extends StatefulWidget {
 class _HiraganaPageState extends State<HiraganaPage> {
   NotificationService _notificationService = NotificationService();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Hiragana _words = Hiragana();
   var text = TextEditingController();
 
   @override
@@ -27,6 +27,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
     _getSavedSuccess();
     _getSavedFailure();
     _getSavedIndex();
+    _getSavedFlags();
   }
 
   @override
@@ -95,7 +96,17 @@ class _HiraganaPageState extends State<HiraganaPage> {
                     ),
                     onSubmitted: (String value) async {
                       _notificationService.dailyNotification();
-                      await displayDialog(context, value);
+                      if (_checkAnswer(value)) {
+                        _words.newWord();
+                        _incrementSuccess();
+                        _setSavedIndex();
+                        await displaySuccessDialog(context, value);
+                      } else {
+                        _words.newWord();
+                        _incrementFailure();
+                        _setSavedIndex();
+                        await displayFailureDialog(context, value);
+                      }
                       setState(() {
                         text.clear();
                       });
@@ -125,75 +136,74 @@ class _HiraganaPageState extends State<HiraganaPage> {
     );
   }
 
-  Future<void> displayDialog(BuildContext context, String value) async {
+  Future<void> displaySuccessDialog(BuildContext context, String value) async {
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        if (_checkAnswer(value)) {
-          return AlertDialog(
-            title: Text(
-              'おめでとう!',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
+        return AlertDialog(
+          title: Text(
+            'おめでとう!',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
             ),
-            content: Text(
-              'You guessed correctly',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
+          ),
+          content: Text(
+            'You guessed correctly',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
             ),
-            backgroundColor: Const.BACKGROUND_COLOR,
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  _words.newWord();
-                  _incrementSuccess();
-                  _setSavedIndex();
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    color: Const.TEXT_COLOR,
-                  ),
+          ),
+          backgroundColor: Const.BACKGROUND_COLOR,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  color: Const.TEXT_COLOR,
                 ),
               ),
-            ],
-          );
-        } else {
-          return AlertDialog(
-            title: Text(
-              'Almost!',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
             ),
-            content: Text(
-              'You typed "$value" but it was "${_words.getLetter()}".',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> displayFailureDialog(BuildContext context, String value) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Almost!',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
             ),
-            backgroundColor: Const.BACKGROUND_COLOR,
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  _words.newWord();
-                  _incrementFailure();
-                  _setSavedIndex();
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    color: Const.TEXT_COLOR,
-                  ),
+          ),
+          content: Text(
+            'You typed "$value" but it was "${_words.getLetter()}".',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
+            ),
+          ),
+          backgroundColor: Const.BACKGROUND_COLOR,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  color: Const.TEXT_COLOR,
                 ),
               ),
-            ],
-          );
-        }
+            ),
+          ],
+        );
       },
     );
   }
@@ -248,6 +258,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
                   _words.showDakuon = value!;
                   _words.newWord();
                   _setSavedIndex();
+                  _setSavedFlags();
                 });
               },
             ),
@@ -272,6 +283,7 @@ class _HiraganaPageState extends State<HiraganaPage> {
                   _words.showHandakuten = value!;
                   _words.newWord();
                   _setSavedIndex();
+                  _setSavedFlags();
                 });
               },
             ),
@@ -354,5 +366,26 @@ class _HiraganaPageState extends State<HiraganaPage> {
 
   clearText() {
     text.clear();
+  }
+
+  _getSavedFlags() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      _words.setShowDakuon(
+          prefs.getBool('${_words.getTitle().toString()}_showDakuon') ?? false);
+      _words.setShowHandakuten(
+          prefs.getBool('${_words.getTitle().toString()}_showHandakuten') ??
+              false);
+    });
+  }
+
+  _setSavedFlags() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      prefs.setBool(
+          '${_words.getTitle().toString()}_showDakuon', _words.showDakuon);
+      prefs.setBool('${_words.getTitle().toString()}_showHandakuten',
+          _words.showHandakuten);
+    });
   }
 }

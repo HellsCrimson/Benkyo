@@ -5,6 +5,8 @@ import 'package:benkyo/category/kanji.dart';
 import 'package:benkyo/notification_service.dart';
 import 'package:benkyo/pages/historic.dart';
 
+Kanji _words = Kanji();
+
 class KanjiPage extends StatefulWidget {
   const KanjiPage({Key? key}) : super(key: key);
 
@@ -14,7 +16,6 @@ class KanjiPage extends StatefulWidget {
 class _KanjiPageState extends State<KanjiPage> {
   NotificationService _notificationService = NotificationService();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Kanji _words = Kanji();
   var text = TextEditingController();
 
   @override
@@ -23,6 +24,7 @@ class _KanjiPageState extends State<KanjiPage> {
     _getSavedSuccess();
     _getSavedFailure();
     _getSavedIndex();
+    _getSavedFlags();
   }
 
   @override
@@ -252,6 +254,7 @@ class _KanjiPageState extends State<KanjiPage> {
                 onChanged: (bool? value) {
                   setState(() {
                     _words.kunPronunciation = value!;
+                    _setSavedFlags();
                   });
                 }),
             Text(
@@ -274,6 +277,7 @@ class _KanjiPageState extends State<KanjiPage> {
                 onChanged: (bool? value) {
                   setState(() {
                     _words.kunPronunciation = !value!;
+                    _setSavedFlags();
                   });
                 }),
             Text(
@@ -355,5 +359,21 @@ class _KanjiPageState extends State<KanjiPage> {
 
   clearText() {
     text.clear();
+  }
+
+  _getSavedFlags() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      _words.setKunPronunciation(
+          prefs.getBool('${_words.getTitle().toString()}_kun') ?? false);
+    });
+  }
+
+  _setSavedFlags() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      prefs.setBool(
+          '${_words.getTitle().toString()}_kun', _words.kunPronunciation);
+    });
   }
 }

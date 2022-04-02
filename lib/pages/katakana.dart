@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:benkyo/category/katakana.dart';
 import 'package:benkyo/pages/historic.dart';
 
+Katakana _words = Katakana();
+
 class KatakanaPage extends StatefulWidget {
   const KatakanaPage({Key? key}) : super(key: key);
 
@@ -15,7 +17,6 @@ class KatakanaPage extends StatefulWidget {
 class _KatakanaPageState extends State<KatakanaPage> {
   NotificationService _notificationService = NotificationService();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Katakana _words = Katakana();
   var text = TextEditingController();
 
   @override
@@ -24,6 +25,7 @@ class _KatakanaPageState extends State<KatakanaPage> {
     _getSavedSuccess();
     _getSavedFailure();
     _getSavedIndex();
+    _getSavedFlags();
   }
 
   @override
@@ -245,6 +247,7 @@ class _KatakanaPageState extends State<KatakanaPage> {
                   _words.showDakuon = value!;
                   _words.newWord();
                   _setSavedIndex();
+                  _setSavedFlags();
                 });
               },
             ),
@@ -269,6 +272,7 @@ class _KatakanaPageState extends State<KatakanaPage> {
                   _words.showHandakuten = value!;
                   _words.newWord();
                   _setSavedIndex();
+                  _setSavedFlags();
                 });
               },
             ),
@@ -351,5 +355,26 @@ class _KatakanaPageState extends State<KatakanaPage> {
 
   clearText() {
     text.clear();
+  }
+
+  _getSavedFlags() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      _words.setShowDakuon(
+          prefs.getBool('${_words.getTitle().toString()}_showDakuon') ?? false);
+      _words.setShowHandakuten(
+          prefs.getBool('${_words.getTitle().toString()}_showHandakuten') ??
+              false);
+    });
+  }
+
+  _setSavedFlags() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      prefs.setBool(
+          '${_words.getTitle().toString()}_showDakuon', _words.showDakuon);
+      prefs.setBool('${_words.getTitle().toString()}_showHandakuten',
+          _words.showHandakuten);
+    });
   }
 }
