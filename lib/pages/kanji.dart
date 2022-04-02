@@ -102,7 +102,17 @@ class _KanjiPageState extends State<KanjiPage> {
                     ),
                     onSubmitted: (String value) async {
                       _notificationService.dailyNotification();
-                      await displayDialog(context, value);
+                      if (_checkAnswer(value)) {
+                        _words.newWord();
+                        _incrementSuccess();
+                        _setSavedIndex();
+                        await displaySuccessDialog(context, value);
+                      } else {
+                        _words.newWord();
+                        _incrementFailure();
+                        _setSavedIndex();
+                        await displayFailureDialog(context, value);
+                      }
                       setState(() {
                         text.clear();
                       });
@@ -132,75 +142,74 @@ class _KanjiPageState extends State<KanjiPage> {
     );
   }
 
-  Future<void> displayDialog(BuildContext context, String value) async {
+  Future<void> displaySuccessDialog(BuildContext context, String value) async {
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        if (_checkAnswer(value)) {
-          return AlertDialog(
-            title: Text(
-              'おめでとう!',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
+        return AlertDialog(
+          title: Text(
+            'おめでとう!',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
             ),
-            content: Text(
-              'You guessed correctly',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
+          ),
+          content: Text(
+            'You guessed correctly',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
             ),
-            backgroundColor: Const.BACKGROUND_COLOR,
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  _words.newWord();
-                  _setSavedIndex();
-                  _incrementSuccess();
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    color: Const.TEXT_COLOR,
-                  ),
+          ),
+          backgroundColor: Const.BACKGROUND_COLOR,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  color: Const.TEXT_COLOR,
                 ),
               ),
-            ],
-          );
-        } else {
-          return AlertDialog(
-            title: Text(
-              'Almost!',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
             ),
-            content: Text(
-              'You typed "$value" but it was "${_words.getLetter()}".',
-              style: TextStyle(
-                color: Const.TEXT_COLOR,
-              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> displayFailureDialog(BuildContext context, String value) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Almost!',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
             ),
-            backgroundColor: Const.BACKGROUND_COLOR,
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  _words.newWord();
-                  _setSavedIndex();
-                  _incrementFailure();
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    color: Const.TEXT_COLOR,
-                  ),
+          ),
+          content: Text(
+            'You typed "$value" but it was "${_words.getLetter()}".',
+            style: TextStyle(
+              color: Const.TEXT_COLOR,
+            ),
+          ),
+          backgroundColor: Const.BACKGROUND_COLOR,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  color: Const.TEXT_COLOR,
                 ),
               ),
-            ],
-          );
-        }
+            ),
+          ],
+        );
       },
     );
   }
