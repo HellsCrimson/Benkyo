@@ -103,15 +103,15 @@ class _KanjiPageState extends State<KanjiPage> {
                     onSubmitted: (String value) async {
                       _notificationService.dailyNotification();
                       if (_checkAnswer(value)) {
+                        await displaySuccessDialog(context, value);
                         _words.newWord();
                         _incrementSuccess();
                         _setSavedIndex();
-                        await displaySuccessDialog(context, value);
                       } else {
+                        await displayFailureDialog(context, value);
                         _words.newWord();
                         _incrementFailure();
                         _setSavedIndex();
-                        await displayFailureDialog(context, value);
                       }
                       setState(() {
                         text.clear();
