@@ -1,3 +1,4 @@
+import 'package:benkyo/pages/stats.dart';
 import 'package:benkyo/widgets/const.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -121,18 +122,40 @@ class _KanjiPageState extends State<KanjiPage> {
                 ),
                 getCheckMark(),
                 getButtons(),
-                TextButton(
-                  onPressed: () {
-                    _words.getHistory().then((value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HistoricPage(
-                              history: value,
-                            ),
-                          ),
-                        ));
-                  },
-                  child: Text('Historic'),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        _words.getHistory().then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HistoricPage(
+                                  history: value,
+                                ),
+                              ),
+                            ));
+                      },
+                      child: Text('Historic'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        _words.getHistory().then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StatsPage(
+                                  symbolList: _words.list,
+                                  history: value,
+                                ),
+                              ),
+                            ));
+                      },
+                      child: Text("Stats"),
+                    ),
+                  ],
                 ),
               ])
             ],

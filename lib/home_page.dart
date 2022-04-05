@@ -1,4 +1,5 @@
 import 'package:benkyo/pages/settings.dart';
+import 'package:benkyo/pages/stats.dart';
 import 'package:benkyo/widgets/const.dart';
 import 'package:flutter/material.dart';
 import 'package:benkyo/pages/katakana.dart';
