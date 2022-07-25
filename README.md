@@ -1,13 +1,18 @@
 # Benkyō
 
-A Flutter project. It constist of a simple quiz app to learn the pronunciation of the kana and kanji.
+A Flutter project. It constist of a simple quiz app to learn the written pronunciation of the kana and kanji.
 
 ## Getting Started
 
 Clone the repo and launch it with flutter. If you want to change the available kana or kanji modify the classes corresponding to it.  
-Only the iOS version was tested.
 
-### Source
+## Screenshots
+
+| Main Screen | Historic | Stats |
+|---          |---       |---    |
+| <img src="https://gist.githubusercontent.com/HellsCrimson/fd15c205dc4dd4f90c7993a76b7fb81f/raw/25055dfd4866fcfa4bafd1cff1f1d2b3f37699ea/main.png" alt="main" width="200"/> | <img src="https://gist.githubusercontent.com/HellsCrimson/fd15c205dc4dd4f90c7993a76b7fb81f/raw/25055dfd4866fcfa4bafd1cff1f1d2b3f37699ea/historic.png" alt="historic" width="200"/> | <img src="https://gist.githubusercontent.com/HellsCrimson/fd15c205dc4dd4f90c7993a76b7fb81f/raw/25055dfd4866fcfa4bafd1cff1f1d2b3f37699ea/stats.png" alt="stats" width="200"/> |
+
+## Source
 
 Picture in logo by : [supalerk laipawat](https://thenounproject.com/icon/japan-1869620/)
 
