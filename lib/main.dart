@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:home_indicator/home_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:benkyo/home_page.dart';
@@ -8,6 +9,7 @@ import 'package:benkyo/widgets/const.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().init();
+  await HomeIndicator.deferScreenEdges([ScreenEdge.bottom]);
   runApp(const MyApp());
 }
 

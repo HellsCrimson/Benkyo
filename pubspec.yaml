@@ -15,6 +15,7 @@ dependencies:
   get: ^4.3.8
   flutter:
     sdk: flutter
+  home_indicator: ^2.0.2
 
   cupertino_icons: ^1.0.2
   flutter_launcher_icons_maker: "^0.10.1"
